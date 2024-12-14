@@ -12,6 +12,16 @@ Dictionary<string, Banda> bandasRegistradas = new();
 bandasRegistradas.Add(ira.Nome, ira);
 bandasRegistradas.Add(beatles.Nome, beatles);
 
+Dictionary<int, Menu> opcoes = new()
+{
+    { 1, new MenuRegistrarBanda() },
+    { 2, new MenuRegistrarAlbum() },
+    { 3, new MenuMostrarBanda() },
+    { 4, new MenuAvaliarBanda() },
+    { 5, new MenuExibirDetalhes() },
+    { -1, new MenuSair() }
+};
+
 void ExibirLogo()
 {
     Console.WriteLine(@"
@@ -25,6 +35,7 @@ void ExibirLogo()
 ");
     Console.WriteLine("Boas vindas ao Screen Sound 2.0!");
 }
+
 
 void ExibirOpcoesDoMenu()
 {
@@ -40,48 +51,17 @@ void ExibirOpcoesDoMenu()
     string opcaoEscolhida = Console.ReadLine()!;
     int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
 
-    switch (opcaoEscolhidaNumerica)
+    if (!opcoes.ContainsKey(opcaoEscolhidaNumerica))
     {
-        case 1:
-            MenuRegistrarBanda menuRegistrarBanda = new();
-            menuRegistrarBanda.Executar(bandasRegistradas);
-            ExibirOpcoesDoMenu();
-            break;
-        case 2:
-            MenuRegistrarAlbum menuRegistrarAlbum = new();
-            menuRegistrarAlbum.Executar(bandasRegistradas);
-            ExibirOpcoesDoMenu();
-            break;
-        case 3:
-            MenuMostrarBanda menuMostrarBanda = new();
-            menuMostrarBanda.Executar(bandasRegistradas);
-            ExibirOpcoesDoMenu();
-            break;
-        case 4:
-            MenuAvaliarBanda menuAvaliarBanda = new();
-            menuAvaliarBanda.Executar(bandasRegistradas);
-            break;
-        case 5:
-            MenuExibirDetalhes menuExibirDetalhes = new();
-            menuExibirDetalhes.Executar(bandasRegistradas);
-            ExibirOpcoesDoMenu();
-            break;
-        case -1:
-            Console.WriteLine("Tchau tchau :)");
-            break;
-        default:
-            Console.WriteLine("Opção inválida");
-            break;
+        Console.WriteLine("Opção inválida");
     }
-}
 
-void ExibirTituloDaOpcao(string titulo)
-{
-    int quantidadeDeLetras = titulo.Length;
-    string asteriscos = string.Empty.PadLeft(quantidadeDeLetras, '*');
-    Console.WriteLine(asteriscos);
-    Console.WriteLine(titulo);
-    Console.WriteLine(asteriscos + "\n");
+    Menu menuExibir = opcoes[opcaoEscolhidaNumerica];
+    menuExibir.Executar(bandasRegistradas);
+    if (opcaoEscolhidaNumerica > 0)
+    {
+        ExibirOpcoesDoMenu();
+    }
 }
 
 ExibirOpcoesDoMenu();
